@@ -41,12 +41,12 @@ def mocked_azure_openai_no_results():
 @pytest.mark.asyncio
 async def test_user_profile_generator(mocked_azure_openai):
     generator = UserProfileGenerator(mocked_azure_openai)
-    results = await generator.generate("female", 100, 3)
+    results = await generator.generate(20, 40, "female", 100, 3)
     assert 3 == len(results)
 
 
 @pytest.mark.asyncio
 async def test_user_profile_generator_no_result(mocked_azure_openai_no_results):
     generator = UserProfileGenerator(mocked_azure_openai_no_results)
-    results = await generator.generate("female", 100, 3)
+    results = await generator.generate(20, 40, "female", 100, 3)
     assert results == ["", "", ""]

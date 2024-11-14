@@ -1,11 +1,42 @@
 import json
 from dataclasses import dataclass
 
+import numpy as np
+
 from eval_user_profiles.models.comparison_result import ComparisonResult
 from eval_user_profiles.protocols.i_azure_openai_service import IAzureOpenAIService
 from eval_user_profiles.protocols.i_user_profile_comparator import (
     IUserProfileComparator,
 )
+
+PROMPT = """You are a product consumer expert. You are asked to compare a profile against a desired profile.
+
+The desired user profile is: 
+{base}
+
+The provided profile is:
+{profile}
+
+Score the provided profile based on how similar it is to the desired profile.
+The score ranges from 0 to 1, where 0 means that you will never consider the provided profile for product testing and 1 means that you will definitely consider it.
+
+When comparing them, you shall consider the following aspects:
+
+1. Gender of the person. Having the right gender is important for product testing.
+2. State where the person live. The product is only available in certain states hence the person must live in the right state.
+3. Marital status
+4. Annual household income
+5. Personality Traits
+
+
+Provide your score in this a JSON format as follows:
+
+```json
+{
+    "reasoning": "<your reasoning>",
+    "score": <your score (float type}>
+}```
+"""  # noqa E501
 
 
 @dataclass
@@ -17,23 +48,9 @@ class UserProfileComparator(IUserProfileComparator):
             [
                 {
                     "role": "system",
-                    "content": "You are a product consumer expert. You are asked to "
-                    f"compare two consumer profiles. The first profile is: \n{base}\n\n"
-                    f"The second profile is: \n{profile}\n\n"
-                    "Score the second profile based on how similar it is to the first "
-                    "profile. The score ranges from 0 to 1, where 0 means the two "
-                    "profiles are completely different and 1 means the two profiles "
-                    "are identical. When comparing them, you shall put more weights on "
-                    "where they live, their annual household income, and martial "
-                    "status. You can also consider their age."
-                    "\nProvide your score in this a JSON format as "
-                    "follows: "
-                    + """
-                    {
-                        "reasoning": "<your reasoning>",
-                        "score": <your score>
-                    }
-                    """,
+                    "content": PROMPT.replace("{base}", base).replace(
+                        "{profile}", profile
+                    ),
                 }
             ],
             temperature=0.5,
@@ -51,3 +68,11 @@ class UserProfileComparator(IUserProfileComparator):
         except json.JSONDecodeError:
             print(result.choices[0].message.content)
             return None
+
+    async def compare_with_embedding(self, base: str, profile: str) -> float:
+        embedding_base = await self.openai_service.generate_embdding(base)
+        embedding_profile = await self.openai_service.generate_embdding(profile)
+        dot_product = np.dot(embedding_base, embedding_profile)
+        magnitude_1 = np.linalg.norm(embedding_base)
+        magnitude_2 = np.linalg.norm(embedding_profile)
+        return float(dot_product / (magnitude_1 * magnitude_2))

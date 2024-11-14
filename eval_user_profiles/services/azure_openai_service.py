@@ -5,6 +5,7 @@ from lagom.environment import Env
 from openai import AsyncAzureOpenAI
 from openai.types.chat.chat_completion import ChatCompletion
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
+from openai.types.create_embedding_response import CreateEmbeddingResponse
 
 from eval_user_profiles.protocols.i_azure_openai_service import IAzureOpenAIService
 
@@ -14,6 +15,7 @@ class AzureOpenAIEnv(Env):
     azure_openai_key: str | None = None
     azure_openai_api_version: str
     azure_openai_deployed_model_name: str
+    azure_openai_deployed_text_model_name: str
 
 
 @dataclass
@@ -48,3 +50,12 @@ class AzureOpenAIService(IAzureOpenAIService):
         )
 
         return result
+
+    async def generate_embdding(self, text: str, **kwargs) -> list[float]:
+        result: CreateEmbeddingResponse = await self.client.embeddings.create(
+            model=self.env.azure_openai_deployed_text_model_name,
+            input=text,
+            **kwargs,
+        )
+
+        return result.data[0].embedding

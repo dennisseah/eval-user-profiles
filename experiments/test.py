@@ -18,12 +18,26 @@ async def main():
     cmp = container[IUserProfileComparator]
 
     # create 5 users with annual household income of 100k
-    results = await svc.generate("male", 100, 5)
+    results = await svc.generate(30, 40, "male", 100, 5)
     base = get_base_profile()
     cmp_results = await asyncio.gather(*[cmp.compare(base, user) for user in results])
 
     for r in filter(lambda x: x is not None, cmp_results):
         print(r.model_dump())  # type: ignore
+        print()
+        print()
+
+    async def fn_embedding(user: str) -> dict[str, float | str]:
+        return {
+            "name": user.split("\n")[0],
+            "score": await cmp.compare_with_embedding(base, user),
+        }
+
+    cmp_embedding_results = await asyncio.gather(
+        *[fn_embedding(user) for user in results]
+    )
+    for r in cmp_embedding_results:
+        print(r)
         print()
         print()
 

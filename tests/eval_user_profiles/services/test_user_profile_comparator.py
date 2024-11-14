@@ -24,6 +24,9 @@ def mocked_azure_openai():
             ]
             return mocked_result
 
+        async def generate_embdding(self, text, **kwargs) -> list[float]:
+            return [1.0]
+
     return MockedAzureOpenAI()
 
 
@@ -85,3 +88,12 @@ async def test_compare_err(mocked_azure_openai_invalid_json):
     result = await comparator.compare("base", "profile")
 
     assert result is None
+
+
+@pytest.mark.asyncio
+async def test_compare_with_embedding(mocked_azure_openai):
+    comparator = UserProfileComparator(openai_service=mocked_azure_openai)
+
+    result = await comparator.compare_with_embedding("base", "profile")
+
+    assert result == 1.0
