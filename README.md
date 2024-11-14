@@ -16,3 +16,9 @@
 ```sh
 python -m pytest -p no:warnings --cov-report term-missing --cov=eval_user_profiles tests
 ```
+
+## Simple Experiment
+
+```sh
+python -m experiments.test
+```
