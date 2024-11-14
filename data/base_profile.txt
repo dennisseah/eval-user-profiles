@@ -1,0 +1,22 @@
+Name: Jason Miller
+Age: 35
+Demographic: Caucasian, married, living in San Diego, California, with a household income of $100,000 per year.
+
+Personality Traits:
+- Ambitious: Jason is driven and goal-oriented, always striving to advance in his career and improve his family's quality of life.
+- Outgoing: He enjoys socializing and meeting new people, making him a natural networker both professionally and personally.
+- Tech-savvy: Jason is comfortable with technology and enjoys staying up-to-date with the latest gadgets and innovations.
+- Health-conscious: He prioritizes a healthy lifestyle, including regular exercise and a balanced diet.
+- Family-oriented: Jason values his time with his wife and makes an effort to create a warm and supportive home environment.
+
+Interests:
+- Outdoor activities: Jason loves hiking, biking, and spending time at the beach with his wife.
+- Technology: He is an early adopter of new tech products and enjoys researching and discussing the latest advancements.
+- Sports: Jason is a fan of football and basketball, often attending games or watching them with friends.
+- Fitness: He regularly goes to the gym and participates in local fitness events and challenges.
+- Traveling: Jason and his wife enjoy exploring new destinations, both domestically and internationally, and are always planning their next adventure.
+- Cooking: He likes experimenting with new recipes and cooking healthy meals for his family.
+- Music: Jason enjoys a wide range of music genres and often attends live concerts and music festivals.
+
+Brand Affinity:
+Jason is a loyal consumer of Apple products, appreciating their sleek design, user-friendly interface, and seamless integration across devices. He also prefers brands like Nike for athletic wear, Whole Foods for groceries, and Tesla for eco-friendly transportation. Additionally, he enjoys shopping at REI for outdoor gear and Amazon for its convenience and wide selection of products.
